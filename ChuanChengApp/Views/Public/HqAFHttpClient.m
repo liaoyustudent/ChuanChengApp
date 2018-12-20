@@ -1,5 +1,6 @@
 #import "HqAFHttpClient.h"
 #import "Constant.h"
+#import "Viewcontroller.h"
 @implementation HqAFHttpClient
 
 +(AFHTTPSessionManager *)shareOperationManager
@@ -37,9 +38,7 @@
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
                 NSLog(@"error = %@",error);
-                
                 [self requestFailResult:response wihtCompleBlock:block];
-                
             }];
         }
             break;
@@ -51,10 +50,13 @@
             [manager POST:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
                 [self requestSueccesResult:response withResponseObject:responseObject wihtCompleBlock:block];
+                
+                
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 NSLog(@"error = %@",error);
                 NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
                 [self requestFailResult:response wihtCompleBlock:block];
+                
             }];
         }
             break;
@@ -168,5 +170,28 @@
     
     block(response,nil);
 }
+
+// 登陆后淡入淡出更换rootViewController
++ (void)restoreRootViewController:(UIViewController *)rootViewController
+{
+    typedef void (^Animation)(void);
+    UIWindow* window = [UIApplication sharedApplication].keyWindow;
+    
+    rootViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    Animation animation = ^{
+        BOOL oldState = [UIView areAnimationsEnabled];
+        [UIView setAnimationsEnabled:NO];
+        [UIApplication sharedApplication].delegate.window.rootViewController = rootViewController;
+        [UIView setAnimationsEnabled:oldState];
+    };
+    
+    [UIView transitionWithView:window
+                      duration:0.5f
+                       options:UIViewAnimationOptionTransitionFlipFromBottom
+                    animations:animation
+                    completion:nil];
+}
+
+
 
 @end

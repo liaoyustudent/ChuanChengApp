@@ -36,6 +36,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor=[UIColor whiteColor];
     _TopBarHeight=38;
     _defultInde=1;//默认初始登录页
     _rememberStatus=1;//默认选中

@@ -15,6 +15,7 @@
 #import "MyTools.H"
 #import "UIScrollView+MJRefresh.h"
 #import "MJRefresh.h"
+#import "ViewController.h"
 
 @interface AdvertViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *AdvertList;
@@ -51,6 +52,28 @@
     [self.AdvertTableView reloadData];
     
 }
+
+// 登陆后淡入淡出更换rootViewController
+- (void)restoreRootViewController:(UIViewController *)rootViewController
+{
+    typedef void (^Animation)(void);
+    UIWindow* window = [UIApplication sharedApplication].keyWindow;
+    
+    rootViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    Animation animation = ^{
+        BOOL oldState = [UIView areAnimationsEnabled];
+        [UIView setAnimationsEnabled:NO];
+        [UIApplication sharedApplication].delegate.window.rootViewController = rootViewController;
+        [UIView setAnimationsEnabled:oldState];
+    };
+    
+    [UIView transitionWithView:window
+                      duration:0.5f
+                       options:UIViewAnimationOptionTransitionFlipFromBottom
+                    animations:animation
+                    completion:nil];
+}
+
 -(void)loadMore
 {
     //暂无内容
@@ -73,7 +96,7 @@
             
             [self.AdvertTableView reloadData];
         }else{
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:result.message preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"获取列表失败" message:result.message preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             }];
             [alertController addAction:cancelAction];

@@ -45,6 +45,7 @@
 		A413411C21C69FB40012CA3C /* ic_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = A413411321C69FB30012CA3C /* ic_Back.png */; };
 		A413411D21C69FB40012CA3C /* pic_dingbu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A413411421C69FB30012CA3C /* pic_dingbu@2x.png */; };
 		A413411E21C69FB40012CA3C /* pic_dingbu@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A413411521C69FB30012CA3C /* pic_dingbu@3x.png */; };
+		A41A1FCD21CBBC1F0006CD45 /* UserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A41A1FCC21CBBC1F0006CD45 /* UserInfoModel.m */; };
 		A4237E9721AD968E00E5D2D2 /* AdvertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4237E9621AD968E00E5D2D2 /* AdvertViewController.m */; };
 		A4237EAE21ADA43A00E5D2D2 /* ic_qipao@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A4237E9921ADA43A00E5D2D2 /* ic_qipao@3x.png */; };
 		A4237EAF21ADA43A00E5D2D2 /* ic_shouye@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A4237E9A21ADA43A00E5D2D2 /* ic_shouye@2x.png */; };
@@ -239,6 +240,8 @@
 		A413411321C69FB30012CA3C /* ic_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_Back.png; path = "../../../../../../../../chuancheng/pics/个人中心_slices/ic_Back.png"; sourceTree = "<group>"; };
 		A413411421C69FB30012CA3C /* pic_dingbu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pic_dingbu@2x.png"; path = "../../../../../../../../chuancheng/pics/个人中心_slices/pic_dingbu@2x.png"; sourceTree = "<group>"; };
 		A413411521C69FB30012CA3C /* pic_dingbu@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pic_dingbu@3x.png"; path = "../../../../../../../../chuancheng/pics/个人中心_slices/pic_dingbu@3x.png"; sourceTree = "<group>"; };
+		A41A1FCB21CBBC1F0006CD45 /* UserInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserInfoModel.h; sourceTree = "<group>"; };
+		A41A1FCC21CBBC1F0006CD45 /* UserInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserInfoModel.m; sourceTree = "<group>"; };
 		A4237E9521AD968E00E5D2D2 /* AdvertViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdvertViewController.h; sourceTree = "<group>"; };
 		A4237E9621AD968E00E5D2D2 /* AdvertViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdvertViewController.m; sourceTree = "<group>"; };
 		A4237E9921ADA43A00E5D2D2 /* ic_qipao@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ic_qipao@3x.png"; path = "../../../../../../../../chuancheng/pics/首页/画板 1_slices/ic_qipao@3x.png"; sourceTree = "<group>"; };
@@ -819,6 +822,8 @@
 				A465EB7921C0119C00E41E09 /* AdvertModel.m */,
 				A476798621C67F8600CBCDDC /* PersonalModel.h */,
 				A476798721C67F8600CBCDDC /* PersonalModel.m */,
+				A41A1FCB21CBBC1F0006CD45 /* UserInfoModel.h */,
+				A41A1FCC21CBBC1F0006CD45 /* UserInfoModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1093,6 +1098,7 @@
 			files = (
 				A405ABF521C1613300549DD9 /* MJRefreshGifHeader.m in Sources */,
 				A465EB7021BFFB3300E41E09 /* UIButton+WebCache.m in Sources */,
+				A41A1FCD21CBBC1F0006CD45 /* UserInfoModel.m in Sources */,
 				A405ABEE21C1613300549DD9 /* MJRefreshHeader.m in Sources */,
 				A465EB7621BFFB3300E41E09 /* UIImage+WebP.m in Sources */,
 				A405ABF321C1613300549DD9 /* MJRefreshBackNormalFooter.m in Sources */,
