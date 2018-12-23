@@ -19,7 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy) NSString *FImgUrl;
 //是否是VIP
 @property (nonatomic,copy) NSString *IsVIP;
-
+//联系方式
+@property (nonatomic,copy) NSString *FMobile;
 @end
 
 NS_ASSUME_NONNULL_END

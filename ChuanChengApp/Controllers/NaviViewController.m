@@ -9,6 +9,11 @@
 #import "NaviViewController.h"
 #import "AdvertViewController.h"
 #import "PersonalController.h"
+#import "HqAFHttpClient.h"
+#import "Constant.h"
+#import "BaseServerModel.h"
+#import "MyTools.h"
+#import "UserInfoModel.h"
 
 @interface NaviViewController ()
 
@@ -18,9 +23,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //将用户信息存入偏好设置
+    [self GetUserInfo];
     
     AdvertViewController *vc2 = [[AdvertViewController alloc] init];
-    //[vc2.view addSubview:AdvertTable];
     UINavigationController *navOne=[[UINavigationController alloc]initWithRootViewController:vc2];
     navOne.title = @"一手楼盘";
     navOne.tabBarItem.image=[[UIImage imageNamed:@"ic_shouyeblack"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -54,6 +60,35 @@
     [tabBar setBackgroundColor:[UIColor grayColor]];
 }
 
+//获取用户信息
+-(void)GetUserInfo{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *tokenKey=[userDefaults objectForKey:@"TOKEN_KEY"];
+    NSDictionary *Httpheaders=@{@"Authorization":[NSString stringWithFormat:@"%@%@",@"Bearer ",tokenKey] };
+    
+    [HqAFHttpClient starRequestWithHeaders:Httpheaders withURLString:@"/api/Login/IsLogin" withParam:@{@"curr":@1,@"pageSize":@100} requestIsNeedJson:FALSE responseIsNeedJson:TRUE method:Get wihtCompleBlock:^(NSHTTPURLResponse *response, id responseObject) {
+        
+        BaseServerModel *result= [BaseServerModel modelWithDictionary:responseObject];
+        if(result.code==1){
+            UserInfoModel *userInfo=[UserInfoModel modelWithDictionary:result.object];
+            [userDefaults setObject:[NSNumber numberWithInt:userInfo.UserId] forKey:@"UserId"];
+            [userDefaults setObject:userInfo.UserName forKey:@"NickName"];
+            [userDefaults setObject:userInfo.FImgUrl forKey:@"FImgUrl"];
+            [userDefaults setObject:userInfo.IsVIP forKey:@"IsVIP"];
+            [userDefaults setObject:userInfo.FMobile forKey:@"FMobile"];
+            [userDefaults synchronize];
+        }else{
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"获取个人信息失败" message:result.message preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            }];
+            [alertController addAction:cancelAction];
+            [self presentViewController:alertController animated:YES completion:^(void){
+                [MyTools GotoLogin];
+            }];
+        }
+        
+    }];
+}
 
 
 @end

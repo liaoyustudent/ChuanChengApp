@@ -17,13 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///设置下标
 - (void)setIndex:(NSInteger)index;
 
-///设置红线高度
-- (void)setIndoctorHeight:(CGFloat)indictorHeight;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
-- (NSInteger)currrentIndex;
 
-///设置标题
-- (void)setLabelText:(NSString *)text atIndex:(NSInteger)index;
+
 @property (nonatomic, copy) void(^HandleClick)(NSInteger index);
 @property (nonatomic, assign) BOOL cancelAnimated;
 @property (assign, nonatomic)int bottom;

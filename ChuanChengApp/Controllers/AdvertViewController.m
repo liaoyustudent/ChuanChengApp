@@ -16,6 +16,7 @@
 #import "UIScrollView+MJRefresh.h"
 #import "MJRefresh.h"
 #import "ViewController.h"
+#import "MyTools.h"
 
 @interface AdvertViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *AdvertList;
@@ -52,28 +53,6 @@
     [self.AdvertTableView reloadData];
     
 }
-
-// 登陆后淡入淡出更换rootViewController
-- (void)restoreRootViewController:(UIViewController *)rootViewController
-{
-    typedef void (^Animation)(void);
-    UIWindow* window = [UIApplication sharedApplication].keyWindow;
-    
-    rootViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    Animation animation = ^{
-        BOOL oldState = [UIView areAnimationsEnabled];
-        [UIView setAnimationsEnabled:NO];
-        [UIApplication sharedApplication].delegate.window.rootViewController = rootViewController;
-        [UIView setAnimationsEnabled:oldState];
-    };
-    
-    [UIView transitionWithView:window
-                      duration:0.5f
-                       options:UIViewAnimationOptionTransitionFlipFromBottom
-                    animations:animation
-                    completion:nil];
-}
-
 -(void)loadMore
 {
     //暂无内容
@@ -88,7 +67,12 @@
         //下拉加载框关闭
         [self.AdvertTableView.mj_header endRefreshing];
         BaseServerModel *result= [BaseServerModel modelWithDictionary:responseObject];
+        
+        if(result.code==2){
+            [MyTools GotoLogin];
+        }
         if(result.code==1){
+            
             for (NSDictionary *advertdic in result.object) { /** 便是数组 */
                 AdvertModel *advert=[AdvertModel modelWithDictionary:advertdic];
                 [self.AdvertList addObject:advert];

@@ -9,9 +9,12 @@
 #import "PersonalController.h"
 #import "Constant.h"
 #import "PersonalModel.h"
+#import "UIImageView+WebCache.h"
+#import "MyTools.h"
 
 @interface PersonalController()<UITableViewDelegate,UITableViewDataSource>{
     CGFloat _tableHeight;
+    NSString *_FUserMobile;
 }
 
 @property (nonatomic, strong) NSMutableArray *PersonalList;
@@ -25,7 +28,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor whiteColor];
+    self.navigationController.navigationBar.barTintColor=[UIColor redColor];
+    [self.navigationController setNavigationBarHidden:YES];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     _tableHeight=IS_IPHONE_X?UISCreen_Height-150:UISCreen_Height-100;
+    _FUserMobile=[userDefaults objectForKey:@"FMobile"];
     [self GetPersonnalList];
     
     //布局头部View
@@ -121,13 +128,40 @@
         arrowImage.image=[UIImage imageNamed:@"ic_Back"];
         [cell.contentView addSubview:arrowImage];
     }
+    //联系方式行
+    if(indexPath.row==0){
+        UIView *MobileView=[[UIView alloc]initWithFrame:CGRectMake(UISCreen_Width-130, 22, 100, 15)];
+        UILabel *MobileLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 15)];
+        MobileLbl.numberOfLines = 0;
+        NSMutableAttributedString *mobileStr = [[NSMutableAttributedString alloc] initWithString:_FUserMobile attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Regular" size: 15],NSForegroundColorAttributeName: [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0]}];
+        MobileLbl.attributedText = mobileStr;
+        [MobileView addSubview:MobileLbl];
+        
+        [cell addSubview:MobileView];
+    }
     
     return cell;
 }
 
+// 选中了 cell 时触发
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.row) {
+        case 4://退出登录
+            [self DoLogOut];
+            break;
+            
+        default:
+            break;
+    }
+    
+    NSLog(@"选中了第%li个cell", (long)indexPath.row);
+}
+
 //布局头部View
 -(UIView *)LayoutHeaderView{
-    UIView *hView=[[UIView alloc]initWithFrame:CGRectMake(0, StatusBarHeight+40, UISCreen_Width, 200)];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    //背景图片
+    UIView *hView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, UISCreen_Width, 200)];
     UIImageView *headerImgBG=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, UISCreen_Width, 200)];
     headerImgBG.image=[UIImage imageNamed:@"pic_dingbu"];
     headerImgBG.contentMode = UIViewContentModeScaleAspectFill;
@@ -135,13 +169,81 @@
     headerImgBG.clipsToBounds  = YES;
     [hView addSubview:headerImgBG];
     
-    UIImageView *headImg=[[UIImageView alloc]initWithFrame:CGRectMake((UISCreen_Width-77)/2, 100, 77, 77)];
-    headImg.image=[UIImage imageNamed:@"ic_touxiangbeijing"];
+    //联系我们
+    UILabel *lbTelLink = [[UILabel alloc] init];
+    lbTelLink.frame = CGRectMake(UISCreen_Width-90,StatusBarHeight+7,60,14.5);
+    lbTelLink.text = @"联系我们";
+    lbTelLink.font = [UIFont fontWithName:@"PingFangSC-Regular" size:15];
+    lbTelLink.textColor = [UIColor whiteColor];
+    
+    UITapGestureRecognizer *singleTapForget =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickLinkUs)];
+    [lbTelLink addGestureRecognizer:singleTapForget];
+    [lbTelLink setUserInteractionEnabled:YES];
+    [hView addSubview:lbTelLink];
+    //头像
+    UIImageView *headImg=[[UIImageView alloc]initWithFrame:CGRectMake((UISCreen_Width-77)/2, 100, 70, 70)];
+    NSNumber *userID=[userDefaults objectForKey:@"UserId"];
+    NSString *headImgUrl=[NSString stringWithFormat:@"/api/Filse/GetPortrait?UserID=%@",userID];
+    NSString *FullImgUrl=[NSString stringWithFormat:@"%@%@",SERVSER_URL,headImgUrl];
+    [headImg sd_setImageWithURL:FullImgUrl placeholderImage:[UIImage imageNamed:@"ic_touxiangbeijing"]];
+    //headImg.image=[UIImage imageNamed:@"ic_touxiangbeijing"];
     headImg.contentMode=UIViewContentModeScaleAspectFill;
     headImg.clipsToBounds=YES;
+    headImg.layer.cornerRadius =headImg.frame.size.width / 2 ;
+    headImg.layer.borderColor = [UIColor whiteColor].CGColor;
+    headImg.layer.borderWidth = 2;
     [hView addSubview:headImg];
     
+    
+    
+    
     return  hView;
+}
+//退出登录
+-(void)DoLogOut{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"是否确认退出" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults removeObjectForKey:@"pwd"];
+            [userDefaults synchronize];
+            [MyTools GotoLogin];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+
+    }];
+    
+    [alertController addAction:confirmAction];
+    [alertController addAction:cancelAction];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController: alertController animated: YES completion: nil];
+    });
+    
+
+}
+
+
+-(void)onClickLinkUs{
+    NSString *tel=@"057766861727";
+    NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",tel];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:tel preferredStyle:UIAlertControllerStyleAlert];
+    //取消按钮
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        
+    }];
+    //呼叫按钮
+    UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"呼叫" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str] options:@{UIApplicationOpenURLOptionsSourceApplicationKey : @YES}  completionHandler:^(BOOL success) {
+            if(!success){
+                
+            }
+        }];
+    }];
+    [alertController addAction:cancelAction];
+    
+    [alertController addAction:otherAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
 }
 
 @end

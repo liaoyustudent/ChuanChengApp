@@ -14,6 +14,7 @@
 #import "HqAFHttpClient.h"
 #import "BaseServerModel.h"
 #import "NaviViewController.h"
+#import "MyTools.h"
 
 @interface ViewController ()<UIScrollViewDelegate>
 {
@@ -75,6 +76,10 @@
     self.loginAccount.text=[userDefaults objectForKey:@"userName"];
     self.loginPwd.text=[userDefaults objectForKey:@"pwd"];
     [self ChangeLoginText];
+    //第一次打开时直接登录
+    if(self.btnLogin.userInteractionEnabled==TRUE){
+        [self DoLogin];
+    }
 }
 
 -(UIView *)layoutTopView{
@@ -204,7 +209,7 @@
             [userDefaults setObject:result.object forKey:@"TOKEN_KEY"];
             //跳转到首页
             NaviViewController *vc=[[NaviViewController alloc]init];
-            [self restoreRootViewController:vc];
+            [MyTools restoreRootViewController:vc];
             //[UIApplication sharedApplication].delegate.window.rootViewController=vc;
             
         }else{
@@ -275,28 +280,6 @@
 -(void)fingerTapped:(UITapGestureRecognizer *)gestureRecognizer {
     [self.view endEditing:YES];
 }
-
-// 登陆后淡入淡出更换rootViewController
-- (void)restoreRootViewController:(UIViewController *)rootViewController
-{
-    typedef void (^Animation)(void);
-    UIWindow* window = [UIApplication sharedApplication].keyWindow;
-    
-    rootViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    Animation animation = ^{
-        BOOL oldState = [UIView areAnimationsEnabled];
-        [UIView setAnimationsEnabled:NO];
-        [UIApplication sharedApplication].delegate.window.rootViewController = rootViewController;
-        [UIView setAnimationsEnabled:oldState];
-    };
-    
-    [UIView transitionWithView:window
-                      duration:0.5f
-                       options:UIViewAnimationOptionTransitionFlipFromBottom
-                    animations:animation
-                    completion:nil];
-}
-
 
 
 @end

@@ -47,7 +47,33 @@
     NSString *timeStr = [NSString stringWithFormat:@"%ld", (long)[tempDate timeIntervalSince1970]*1000];//字符串转成时间戳,精确到毫秒*1000
     return timeStr;
 }
+//跳转到登录页
++(void)GotoLogin{
+    
+    ViewController *vc=[[ViewController alloc]init];
+    [self restoreRootViewController:vc];
+}
 
 
+// 登陆后淡入淡出更换rootViewController
++ (void)restoreRootViewController:(UIViewController *)rootViewController
+{
+    typedef void (^Animation)(void);
+    UIWindow* window = [UIApplication sharedApplication].keyWindow;
+    
+    rootViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    Animation animation = ^{
+        BOOL oldState = [UIView areAnimationsEnabled];
+        [UIView setAnimationsEnabled:NO];
+        [UIApplication sharedApplication].delegate.window.rootViewController = rootViewController;
+        [UIView setAnimationsEnabled:oldState];
+    };
+    
+    [UIView transitionWithView:window
+                      duration:0.5f
+                       options:UIViewAnimationOptionTransitionFlipFromBottom
+                    animations:animation
+                    completion:nil];
+}
 
 @end
