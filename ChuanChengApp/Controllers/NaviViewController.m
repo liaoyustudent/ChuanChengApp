@@ -1,7 +1,7 @@
 //
 //  NaviViewController.m
 //  ChuanChengApp
-//
+//  导航栏控件
 //  Created by liaoyu on 2018/12/2.
 //  Copyright © 2018年 ChuanCheng. All rights reserved.
 //
@@ -9,10 +9,7 @@
 #import "NaviViewController.h"
 #import "AdvertViewController.h"
 #import "PersonalController.h"
-#import "HqAFHttpClient.h"
-#import "Constant.h"
 #import "BaseServerModel.h"
-#import "MyTools.h"
 #import "UserInfoModel.h"
 
 @interface NaviViewController ()

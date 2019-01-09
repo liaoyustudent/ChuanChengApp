@@ -7,7 +7,7 @@
 //
 
 #import "BaseModel.h"
-
+//首页文章列表模型
 @interface AdvertModel : BaseModel
 
 @property (nonatomic, assign) int FID;

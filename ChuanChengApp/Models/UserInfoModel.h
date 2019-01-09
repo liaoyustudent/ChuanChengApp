@@ -9,7 +9,7 @@
 #import "BaseModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
+//用户信息模型
 @interface UserInfoModel : BaseModel
 //用户id
 @property (nonatomic, assign) int UserId;

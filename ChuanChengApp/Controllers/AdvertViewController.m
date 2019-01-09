@@ -1,22 +1,15 @@
 //
 //  AdvertViewController.m
 //  ChuanChengApp
-//
+//  一手楼盘
 //  Created by liaoyu on 2018/11/27.
 //  Copyright © 2018年 ChuanCheng. All rights reserved.
 //
 
 #import "AdvertViewController.h"
-#import "Constant.h"
-#import "HqAFHttpClient.h"
-#import "UIImageView+WebCache.h"
 #import "AdvertModel.h"
-#import "BaseServerModel.h"
-#import "MyTools.H"
-#import "UIScrollView+MJRefresh.h"
-#import "MJRefresh.h"
-#import "ViewController.h"
-#import "MyTools.h"
+
+
 
 @interface AdvertViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *AdvertList;
@@ -60,15 +53,14 @@
 //获取列表
 -(void)GetAdvertList{
     self.AdvertList=[[NSMutableArray alloc]init];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *tokenKey=[userDefaults objectForKey:@"TOKEN_KEY"];
-    NSDictionary *Httpheaders=@{@"Authorization":[NSString stringWithFormat:@"%@%@",@"Bearer ",tokenKey] };
+    NSDictionary *Httpheaders=@{@"Authorization":self.AuthorizationStr };
     [HqAFHttpClient starRequestWithHeaders:Httpheaders withURLString:@"/api/LoanAdvert/GetLoanAdvert" withParam:@{@"curr":@1,@"pageSize":@100} requestIsNeedJson:FALSE responseIsNeedJson:TRUE method:Post wihtCompleBlock:^(NSHTTPURLResponse *response, id responseObject) {
         //下拉加载框关闭
         [self.AdvertTableView.mj_header endRefreshing];
         BaseServerModel *result= [BaseServerModel modelWithDictionary:responseObject];
         
         if(result.code==2){
+            //登录状态过期
             [MyTools GotoLogin];
         }
         if(result.code==1){

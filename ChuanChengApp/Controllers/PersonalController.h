@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
 
-
-@interface PersonalController : UIViewController
+@interface PersonalController : BaseViewController
 
 @end
 

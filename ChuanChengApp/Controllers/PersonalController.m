@@ -1,16 +1,15 @@
 //
 //  PersonalController.m
 //  ChuanChengApp
-//
+//  个人管理
 //  Created by liaoyu on 2018/12/16.
 //  Copyright © 2018年 ChuanCheng. All rights reserved.
 //
 
 #import "PersonalController.h"
-#import "Constant.h"
 #import "PersonalModel.h"
-#import "UIImageView+WebCache.h"
-#import "MyTools.h"
+#import "CollectionViewController.h"
+#import "PrecisePubViewController.h"
 
 @interface PersonalController()<UITableViewDelegate,UITableViewDataSource>{
     CGFloat _tableHeight;
@@ -28,12 +27,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor whiteColor];
-    self.navigationController.navigationBar.barTintColor=[UIColor redColor];
-    [self.navigationController setNavigationBarHidden:YES];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     _tableHeight=IS_IPHONE_X?UISCreen_Height-150:UISCreen_Height-100;
     _FUserMobile=[userDefaults objectForKey:@"FMobile"];
     [self GetPersonnalList];
+    //设置下个页面的返回按钮
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc]init];
+    backItem.title = @"";
+    self.navigationItem.backBarButtonItem = backItem;
     
     //布局头部View
     self.HeaderView=[self LayoutHeaderView];
@@ -44,6 +45,7 @@
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.delegate=self;
     tableView.dataSource=self;
+    tableView.scrollEnabled = NO;
     self.PersonalTableView=tableView;
     [self.view addSubview:tableView];
     
@@ -146,15 +148,20 @@
 // 选中了 cell 时触发
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
+        case 1:
+            [self GotoPrecisePub];
+            break;
+        case 2://我的收藏
+            [self GotoCollectionVc];
+            break;
         case 4://退出登录
             [self DoLogOut];
             break;
-            
         default:
             break;
     }
     
-    NSLog(@"选中了第%li个cell", (long)indexPath.row);
+    //NSLog(@"选中了第%li个cell", (long)indexPath.row);
 }
 
 //布局头部View
@@ -194,11 +201,24 @@
     headImg.layer.borderWidth = 2;
     [hView addSubview:headImg];
     
-    
-    
-    
     return  hView;
 }
+
+//我的收藏
+-(void)GotoCollectionVc{
+    CollectionViewController *collectionVC=[[CollectionViewController alloc]init];
+    //跳转到我的收藏列表
+    [self.navigationController pushViewController:collectionVC animated:YES];
+    
+}
+//房源管理
+-(void)GotoPrecisePub{
+    PrecisePubViewController *precisePubVC=[[PrecisePubViewController alloc]init];
+    //跳转到房源管理
+    [self.navigationController pushViewController:precisePubVC animated:YES];
+    
+}
+
 //退出登录
 -(void)DoLogOut{
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"是否确认退出" message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -221,7 +241,7 @@
 
 }
 
-
+//点击联系我们
 -(void)onClickLinkUs{
     NSString *tel=@"057766861727";
     NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",tel];
@@ -244,6 +264,13 @@
     
     [self presentViewController:alertController animated:YES completion:nil];
     
+}
+//隐藏导航栏
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.delegate = self;
+    self.navController = self.navigationController;
 }
 
 @end
