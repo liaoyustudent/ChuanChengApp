@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) int FPubType;
 
 //楼层
+@property (nonatomic,assign) int FStoreyInt;
+
+//楼层值
 @property (nonatomic,copy) NSString *FStorey;
 
 //备注
@@ -29,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy) NSString *FLinkTel;
 
 //装修 1.毛坯 2.简装 3.中装 4.精装 5.豪装 6.新装 7.老装
-@property (nonatomic, assign) int *FFitment;
+@property (nonatomic, assign) int FFitment;
 
 //装修名
 @property (nonatomic,copy) NSString *FFitmentName;
@@ -38,13 +41,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy) NSString *FAddTime;
 
 //新增人员id
-@property (nonatomic, assign) int *FAddUserID;
+@property (nonatomic, assign) int FAddUserID;
 
 //面积
 @property (nonatomic,copy) NSString *FArea;
 
 //是否置顶
-@property (nonatomic, assign) int *FIsTop;
+@property (nonatomic, assign) int FIsTop;
 
 //小区名称
 @property (nonatomic,copy) NSString *FName;

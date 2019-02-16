@@ -8,6 +8,7 @@
 
 #import "PrecisePubViewController.h"
 #import "PrecisPubModel.h"
+#import "PrecisePubEditViewController.h"
 
 @interface PrecisePubViewController()<UITableViewDelegate,UITableViewDataSource>{
     NSInteger _pageIndex;//当前页
@@ -31,7 +32,7 @@
     [self GetTableList];
     
     //初始化tableview
-    CGFloat tableHeight=IS_IPHONE_X?UISCreen_Height-150:UISCreen_Height-100;
+    CGFloat tableHeight=IS_IPHONE_X?UISCreen_Height-50:UISCreen_Height;
     UITableView *tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, StatusBarHeight+40, UISCreen_Width, tableHeight)];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.delegate=self;
@@ -208,7 +209,7 @@
     FStoreyTitle.textColor=[UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
     [cellView addSubview:FStoreyTitle];
     UILabel *FStoreyLbl=[[UILabel alloc]initWithFrame:CGRectMake(UISCreen_Width/2+50, 41, UISCreen_Width/2-75, 15)];
-    FStoreyLbl.text=model.FStorey;
+    FStoreyLbl.text=[NSString stringWithFormat:@"%d",model.FStorey];
     FStoreyLbl.font=[UIFont fontWithName:@"PingFangSC-Regular" size:15];
     FStoreyLbl.textColor=[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     [cellView addSubview:FStoreyLbl];
@@ -285,6 +286,12 @@
     PrecisPubModel *model=[[PrecisPubModel alloc]init];
     model=[self.precisePubList objectAtIndex:tag];
     int FID=model.FID;
+    
+    //跳转到精准发布
+    PrecisePubEditViewController *editVC=[[PrecisePubEditViewController alloc]init];
+    editVC.FID=FID;
+    //editVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:editVC animated:YES];
     NSLog(@"修改了：%d",FID);
 }
 //更新点击事件
@@ -317,5 +324,50 @@
     }];
     
 }
+
+/**
+ *  只要实现了这个方法，左滑出现Delete按钮的功能就有了
+ *  点击了“左滑出现的Delete按钮”会调用这个方法
+ */
+//IOS9前自定义左滑多个按钮需实现此方法
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *Httpheaders=@{@"Authorization":self.AuthorizationStr };
+    PrecisPubModel *model=[_precisePubList objectAtIndex:[indexPath row]];
+    
+    [HqAFHttpClient starRequestWithHeaders:Httpheaders withURLString:@"/api/PrecisePub/DelPrecisePubn" withParam:@{@"FPreID":[NSString stringWithFormat:@"%d",model.FID]} requestIsNeedJson:FALSE responseIsNeedJson:TRUE method:Get wihtCompleBlock:^(NSHTTPURLResponse *response, id responseObject) {
+        BaseServerModel *result= [BaseServerModel modelWithDictionary:responseObject];
+        
+        if(result.code==2){
+            //登录状态过期
+            [MyTools GotoLogin];
+        }
+        if(result.code==1){
+            // 删除模型
+            [self.precisePubList removeObjectAtIndex:indexPath.row];
+            // 刷新
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        }else{
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"删除失败" message:result.message preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            }];
+            [alertController addAction:cancelAction];
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
+        
+    }];
+    
+    
+}
+
+/**
+ *  修改Delete按钮文字为“删除”
+ */
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"删除";
+}
+
+
 
 @end

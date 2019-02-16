@@ -207,6 +207,7 @@
 //我的收藏
 -(void)GotoCollectionVc{
     CollectionViewController *collectionVC=[[CollectionViewController alloc]init];
+    collectionVC.hidesBottomBarWhenPushed = YES;
     //跳转到我的收藏列表
     [self.navigationController pushViewController:collectionVC animated:YES];
     
@@ -214,6 +215,7 @@
 //房源管理
 -(void)GotoPrecisePub{
     PrecisePubViewController *precisePubVC=[[PrecisePubViewController alloc]init];
+    precisePubVC.hidesBottomBarWhenPushed = YES;
     //跳转到房源管理
     [self.navigationController pushViewController:precisePubVC animated:YES];
     

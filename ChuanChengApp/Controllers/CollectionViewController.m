@@ -33,7 +33,7 @@
     [self GetCollectionList];
     
     //初始化tableview
-    CGFloat tableHeight=IS_IPHONE_X?UISCreen_Height-150:UISCreen_Height-100;
+    CGFloat tableHeight=IS_IPHONE_X?UISCreen_Height-50:UISCreen_Height;
     UITableView *tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, StatusBarHeight+40, UISCreen_Width, tableHeight)];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.delegate=self;
