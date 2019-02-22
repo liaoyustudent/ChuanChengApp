@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ChuanChengApp/ViewController.m"
-            timestampString = "570633122.930391"
+            timestampString = "572012167.106041"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "244"
@@ -64,22 +64,6 @@
             startingLineNumber = "38"
             endingLineNumber = "38"
             landmarkName = "+modelwithJsonString:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ChuanChengApp/Controllers/PrecisePubEditViewController.m"
-            timestampString = "572009557.571646"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "-initModifyData"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

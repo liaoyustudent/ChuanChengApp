@@ -209,7 +209,7 @@
     FStoreyTitle.textColor=[UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
     [cellView addSubview:FStoreyTitle];
     UILabel *FStoreyLbl=[[UILabel alloc]initWithFrame:CGRectMake(UISCreen_Width/2+50, 41, UISCreen_Width/2-75, 15)];
-    FStoreyLbl.text=[NSString stringWithFormat:@"%d",model.FStorey];
+    FStoreyLbl.text=[NSString stringWithFormat:@"%d",model.FStoreyInt];
     FStoreyLbl.font=[UIFont fontWithName:@"PingFangSC-Regular" size:15];
     FStoreyLbl.textColor=[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     [cellView addSubview:FStoreyLbl];
@@ -250,12 +250,14 @@
     EditLbl.text=@"修改";
     EditLbl.font=[UIFont fontWithName:@"PingFangSC-Regular" size:15];
     EditLbl.textColor=[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
-    EditLbl.tag=[indexPath row];
+    //EditLbl.tag=[indexPath row];
+    //NSLog(@"tag:%d",[indexPath row]);
     [EditView addSubview:EditLbl];
     //修改点击事件注册
     UITapGestureRecognizer *singleTapEdit =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickEdit:)];
     [EditView addGestureRecognizer:singleTapEdit];
     [EditView setUserInteractionEnabled:YES];
+    singleTapEdit.view.tag=[indexPath row];
     [cellView addSubview:EditView];
     //更新按钮
     UIView *ReloadView = [[UIView alloc] init];
@@ -267,12 +269,13 @@
     ReloadLbl.text=@"更新";
     ReloadLbl.font=[UIFont fontWithName:@"PingFangSC-Regular" size:15];
     ReloadLbl.textColor=[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
-    ReloadLbl.tag=[indexPath row];
+    //ReloadLbl.tag=[indexPath row];
     [ReloadView addSubview:ReloadLbl];
     //更新点击事件注册
     UITapGestureRecognizer *singleTapReload =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickReload:)];
     [ReloadView addGestureRecognizer:singleTapReload];
     [ReloadView setUserInteractionEnabled:YES];
+    singleTapReload.view.tag=[indexPath row];
     [cellView addSubview:ReloadView];
     
     return cell;
@@ -299,6 +302,7 @@
     UITapGestureRecognizer *tap = (UITapGestureRecognizer *)sender;
     
     int tag = tap.view.tag; // 标示
+    NSLog(@"更新tag：%d",tap.view.tag);
     PrecisPubModel *model=[[PrecisPubModel alloc]init];
     model=[self.precisePubList objectAtIndex:tag];
     int FID=model.FID;
@@ -367,6 +371,16 @@
 {
     return @"删除";
 }
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"viewDidAppear+++");
+    
+    //获取数据
+    [self refresh];
+}
+
 
 
 

@@ -111,12 +111,19 @@
                 txtFPrice.text=info.FPrice;
                 //楼层
                 NSNumber *FStorey= [NSNumber numberWithLong: info.FStorey];
-                txtFStorey.text=[NSString stringWithFormat:@"%d",info.FStorey];
+                txtFStorey.text=[NSString stringWithFormat:@"%d",info.FStoreyInt];
                 //装修
                 FFitment=info.FFitment;
                 hidFFitment=info.FFitmentName;
-                txtFFitment=info.FFitmentName;
-                
+                txtFFitment.text=info.FFitmentName;
+                //备注
+                txtFRemark.text=info.FRemark;
+                //电话
+                txtFMobile.text=info.FLinkTel;
+                //置顶发布
+                swtFIsTop.on=info.FIsTop==1;
+                //校验表单
+                [self CheckForm];
             }
             
         }else{
@@ -190,7 +197,7 @@
     [inputView addSubview:lblFName];
     NSMutableAttributedString *titleFName = [[NSMutableAttributedString alloc] initWithString:@"小区名称" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Regular" size: 12],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
     lblFName.attributedText = titleFName;
-    txtFName=[[UITextField alloc]initWithFrame:CGRectMake(85, 15, UISCreen_Width-135, 15)];
+    txtFName=[[UITextField alloc]initWithFrame:CGRectMake(85, 15, UISCreen_Width-135, 20)];
     txtFName.placeholder=@"请输入";
     txtFName.font=[UIFont fontWithName:@"PingFangSC-Regular" size:15];
     txtFName.keyboardType=UIKeyboardTypeDefault;
@@ -207,7 +214,7 @@
     [inputView addSubview:lblFArea];
     NSMutableAttributedString *titleFArea = [[NSMutableAttributedString alloc] initWithString:@"面积" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Regular" size: 12],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
     lblFArea.attributedText = titleFArea;
-    txtFArea=[[UITextField alloc]initWithFrame:CGRectMake(85, 65, UISCreen_Width/2-85, 15)];
+    txtFArea=[[UITextField alloc]initWithFrame:CGRectMake(85, 65, UISCreen_Width/2-85, 20)];
     txtFArea.placeholder=@"请输入";
     txtFArea.font=[UIFont fontWithName:@"PingFangSC-Regular" size:15];
     txtFArea.keyboardType=UIKeyboardTypeDecimalPad;
@@ -219,7 +226,7 @@
     [inputView addSubview:lblFPrice];
     NSMutableAttributedString *titleFPrice = [[NSMutableAttributedString alloc] initWithString:@"价格" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Regular" size: 12],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
     lblFPrice.attributedText = titleFPrice;
-    txtFPrice=[[UITextField alloc]initWithFrame:CGRectMake(UISCreen_Width/2+50, 65, UISCreen_Width/2-85, 15)];
+    txtFPrice=[[UITextField alloc]initWithFrame:CGRectMake(UISCreen_Width/2+50, 65, UISCreen_Width/2-85, 20)];
     txtFPrice.placeholder=@"万元/年";
     txtFPrice.font=[UIFont fontWithName:@"PingFangSC-Regular" size:15];
     txtFPrice.keyboardType=UIKeyboardTypeDecimalPad;
@@ -236,7 +243,7 @@
     [inputView addSubview:lblFStorey];
     NSMutableAttributedString *titleFStorey = [[NSMutableAttributedString alloc] initWithString:@"楼层" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Regular" size: 12],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
     lblFStorey.attributedText = titleFStorey;
-    txtFStorey=[[UITextField alloc]initWithFrame:CGRectMake(85, 120, UISCreen_Width/2-85, 15)];
+    txtFStorey=[[UITextField alloc]initWithFrame:CGRectMake(85, 120, UISCreen_Width/2-85, 20)];
     txtFStorey.placeholder=@"请输入";
     txtFStorey.font=[UIFont fontWithName:@"PingFangSC-Regular" size:15];
     txtFStorey.keyboardType=UIKeyboardTypeNumberPad;
@@ -248,7 +255,7 @@
     [inputView addSubview:lblFFitment];
     NSMutableAttributedString *titleFFitment = [[NSMutableAttributedString alloc] initWithString:@"装修" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Regular" size: 12],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
     lblFFitment.attributedText = titleFFitment;
-    txtFFitment=[[UITextField alloc]initWithFrame:CGRectMake(UISCreen_Width/2+50, 120, UISCreen_Width/2-85, 15)];
+    txtFFitment=[[UITextField alloc]initWithFrame:CGRectMake(UISCreen_Width/2+50, 120, UISCreen_Width/2-85, 20)];
     txtFFitment.placeholder=@"请选择";
     txtFFitment.font=[UIFont fontWithName:@"PingFangSC-Regular" size:15];
     txtFFitment.tag = 1; //绑定tag
@@ -274,7 +281,7 @@
     [remarkView addSubview:lblFRemark];
     NSMutableAttributedString *titleFRemark = [[NSMutableAttributedString alloc] initWithString:@"备注" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Regular" size: 12],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
     lblFRemark.attributedText = titleFRemark;
-    txtFRemark=[[UITextField alloc]initWithFrame:CGRectMake(85, 25, UISCreen_Width-135, 15)];
+    txtFRemark=[[UITextField alloc]initWithFrame:CGRectMake(85, 25, UISCreen_Width-135, 20)];
     txtFRemark.placeholder=@"请输入";
     txtFRemark.font=[UIFont fontWithName:@"PingFangSC-Regular" size:15];
     txtFRemark.keyboardType=UIKeyboardTypeNumberPad;
@@ -291,7 +298,7 @@
     [remarkView addSubview:lblFMobile];
     NSMutableAttributedString *titleFMobile = [[NSMutableAttributedString alloc] initWithString:@"电话" attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Regular" size: 12],NSForegroundColorAttributeName: [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]}];
     lblFMobile.attributedText = titleFMobile;
-    txtFMobile=[[UITextField alloc]initWithFrame:CGRectMake(85, 75, UISCreen_Width-135, 15)];
+    txtFMobile=[[UITextField alloc]initWithFrame:CGRectMake(85, 75, UISCreen_Width-135, 20)];
     txtFMobile.font=[UIFont fontWithName:@"PingFangSC-Regular" size:15];
     txtFMobile.tag=2;
     txtFMobile.delegate = self; //设置代理
@@ -389,8 +396,61 @@
         [self presentViewController:alertController animated:YES completion:nil];
     
 }
+
+//校验必填项
+-(void)CheckForm{
+    if ([[txtFName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]>0 && [[txtFArea.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]>0&&[[txtFPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]>0) {
+        btnSave.alpha=1;
+        btnSave.userInteractionEnabled=TRUE;
+    }
+    else{
+        btnSave.alpha=0.4;
+        btnSave.userInteractionEnabled=FALSE;
+    }
+    
+}
+
+
 //确认发布事件
 -(void)DoSave {
+    NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+    
+    [dic setObject:[NSNumber numberWithInt:FType] forKey:@"FPubType"];
+    [dic setObject:txtFName.text forKey:@"FName"];
+    [dic setObject:txtFArea.text forKey:@"FArea"];
+    [dic setObject:txtFPrice.text forKey:@"FPrice"];
+    [dic setObject:txtFStorey.text forKey:@"FStorey"];
+    [dic setObject:[NSNumber numberWithInt:FFitment] forKey:@"FFitment"];
+    [dic setObject:txtFRemark.text forKey:@"FRemark"];
+    [dic setObject:txtFMobile.text forKey:@"FLinkTel"];
+    [dic setObject:[NSNumber numberWithInt:swtFIsTop.on?1:0] forKey:@"FIsTop"];
+    
+    if(_FID>0){
+        NSDictionary *Httpheaders=@{@"Authorization":self.AuthorizationStr };
+        [dic setObject:[NSNumber numberWithInt:_FID] forKey:@"FID"];
+        [HqAFHttpClient starRequestWithHeaders:Httpheaders withURLString:@"/api/PrecisePub/MolPrecisePub" withParam:dic requestIsNeedJson:FALSE responseIsNeedJson:TRUE method:Post wihtCompleBlock:^(NSHTTPURLResponse *response, id responseObject) {
+            
+            BaseServerModel *result= [BaseServerModel modelWithDictionary:responseObject];
+            
+            if(result.code==2){
+                //登录状态过期
+                [MyTools GotoLogin];
+            }
+            if(result.code==1){
+                [self.navigationController popViewControllerAnimated:YES];
+            }else{
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"失败" message:result.message preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                }];
+                [alertController addAction:cancelAction];
+                [self presentViewController:alertController animated:YES completion:nil];
+            }
+            
+        }];
+    }
+    else{
+        [dic setObject:[NSNumber numberWithInt:0] forKey:@"FID"];
+    }
     
     
 }
